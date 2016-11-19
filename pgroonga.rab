@@ -133,24 +133,11 @@ pg_bigm
 
 = Benchmark\n(('note:ベンチマーク'))
 
-  # RT
-  delimiter = [|]
+  # image
+  # src = images/search-pg-bigm.pdf
+  # relative_height = 100
 
-  N hits | Elapsed time
-
-  311 | 0.049s
-  14,706 | 1.267s
-  20,389 | 2.860s
-
-(('tag:center'))
-Data: Japanese Wikipedia\n
-(('note:データ：日本語版Wikipedia'))\n
-(('note:Many records and large documents'))\n
-(('note:レコード数が多く、各ドキュメントも大きい'))\n
-(('note:N records: 0.9millions, Avg. body size: 677KiB'))\n
-(('note:レコード数：90万件、平均本文サイズ：677KiB'))
-
-= New solution\n(('note:新しいの解決策'))
+= New solution\n(('note:新しい解決策'))
 
   # image
   # src = images/pgroonga-logo.svg
@@ -160,3 +147,61 @@ Data: Japanese Wikipedia\n
 
   * Pronunciation: píːzí:lúnɡά\n
     (('note:読み方：ぴーじーるんが'))
+
+  * (('wait'))Index and operator classes\n
+    (('note:インデックスと演算子クラス'))
+    * Not operator classes for GIN\n
+      (('note:GINの演算子クラスではない'))
+
+= PGroonga layer
+
+  # image
+  # src = images/pgroonga-layer.svg
+  # relative_width = 100
+
+= Benchmark\n(('note:ベンチマーク'))
+
+  # image
+  # src = images/search-pgroonga-pg-bigm.pdf
+  # relative_height = 100
+
+= Wrap up1\n(('note:まとめ1'))
+
+  * PostgreSQL doesn't support Asian languages\n
+    (('note:PostgreSQLはアジアの言語をサポートしていない'))
+
+  * pg_bigm and PGroonga support all languages\n
+    (('note:pg_bigmとPGroongaはすべての言語をサポートしている'))
+
+= Wrap up2\n(('note:まとめ2'))
+
+  * Many hits case:\n
+    (('note:ヒット数が多い場合'))
+    * pg_bigm is slow\n
+      (('note:pg_bigmは遅い'))
+    * PGroonga is fast\n
+      (('note:PGroongaは速い'))
+
+= Why is PGroonga fast?\n(('note:PGroongaはどうして速いのか'))
+
+  * Doesn't need "recheck"\n
+    (('note:「recheck」が必要ないから'))
+
+  * (('wait'))Why not needed?\n
+    (('note:どうしてPGroongaは「recheck」が必要ないのか？'))
+    * Because PGroonga is\n
+      ((*full*)) inverted index\n
+      (('note:PGroongaは((*完全*))転置インデックスだから'))\n
+      (('note:(GIN is inverted index)'))\n
+      (('note:（GINはただの転置インデックス）'))
+
+= Full inverted index\n(('note:完全転置インデックス'))
+
+Including position\n
+(('note:位置情報を含む'))
+
+= Inverted index diff\n(('note:転置インデックスの違い'))
+
+  # image
+  # src = images/inverted-index.svg
+  # relative_height = 100
