@@ -1,0 +1,162 @@
+= PGroonga
+
+: subtitle
+   Make PostgreSQL\nfast full text search platform\nfor all languages!
+: author
+   Kouhei Sutou
+: institution
+   ClearCode Inc.
+: content-source
+   PGConf.ASIA 2016
+: date
+   2016-12-03
+: allotted-time
+   45m
+: theme
+   .
+
+= PostgreSQL and me\n(('note:PostgreSQLと私'))
+
+Some my patches are merged\n
+(('note:いくつかパッチがマージされている'))
+
+= Patches\n(('note:パッチ'))
+
+  * (('wait'))BUG #13840: pg_dump generates unloadable SQL\n
+    (('note:pg_dumpがリストアできないSQLを出力する'))
+  * (('wait'))BUG #14160: DROP ACCESS METHOD IF EXISTS isn't impl.\n
+    (('note:DROP ACCESS METHOD IF EXISTSが実装されていない'))
+
+(('wait'))
+(('tag:center'))
+They are found while developing PGroonga\n
+(('note:どちらもPGroonga開発中に見つけた問題'))
+
+= PGroonga dev style\n(('note:PGroongaの開発スタイル'))
+
+  * When there are problems in related projects including PostgreSQL\n
+    (('note:PostgreSQLを含む関連プロジェクトに問題があった場合'))
+    * (('wait'))We fix these problems in these projects 
+      instead of choosing workaround in PGroonga\n
+      (('note:PGroonga側で回避するのではなく'))\n
+      (('note:関連プロジェクトの方で問題を直す'))
+
+= PostgreSQL and FTS\n(('note:PostgreSQLと全文検索'))
+
+  * PostgreSQL has out-of-the-box full text search feature\n
+    (('note:PostgreSQLには組込の全文検索機能がある'))\n
+    * (('wait'))It has some problems...\n
+      (('note:ただ、いくつか問題がある'))
+    * (('wait'))We fixed them by PGroonga\n
+      (('note:PGroongaを開発することでそれらの問題を修正した'))
+    * (('wait'))instead of fixing PostgreSQL 😓\n
+      (('note:PostgreSQLを修正するのではなくて…'))
+
+= Because...\n(('note:理由は…'))
+
+  (1) (('wait'))Our approach is different from PostgreSQL's approach\n
+      (('note:PGroongaのやり方はPostgreSQLのやり方と違う'))
+  (2) (('wait'))PG provides plugin system\n
+      (('note:PostgreSQLはプラグインの仕組みを提供している'))
+      * Implementing as a plugin is PostgreSQL way!\n
+        (('note:プラグインでの実装はPostgreSQLらしいやり方！'))
+
+= PG FTS problem\n(('note:PostgreSQLの全文検索の問題'))
+
+(('tag:center'))
+(('tag:margin-bottom * 4'))
+Many langs aren't supported\n
+(('note:サポートしていない言語がたくさんある'))
+
+  * (('wait'))e.g.: Asian languages\n
+    (('note:例：アジアの言語'))
+    * Japanese, Chinese and more\n
+      (('note:日本語や中国語など'))
+
+= FTS for Japanese1\n(('note:日本語の全文検索1'))
+
+  # coderay sql
+  SELECT
+    to_tsvector('japanese',
+                'こんにちは');
+  -- ERROR:  text search configuration
+  --         "japanese" does not exist
+  -- LINE 2:   to_tsvector('japanese',
+  --                       ^
+
+= FTS for Japanese2\n(('note:日本語の全文検索2'))
+
+  # coderay sql
+  CREATE EXTENSION pg_trgm;
+  SELECT 'こんにちは' % 'にちは';
+  --                    ↑substring
+  --  ?column? 
+  -- ----------
+  --  f ← Must be "t"!
+  -- (1 row)
+
+= Existing solution\n(('note:既存の解決策'))
+
+(('tag:center'))
+pg_bigm
+
+= pg_bigm
+
+  * Similar to pg_trgm\n
+    (('note:pg_trgmと似ている'))
+    * Operator class for GIN\n
+      (('note:GIN用の演算子クラス'))
+
+ # coderay sql
+ CREATE INDEX index ON table
+   USING gin (column gin_bigm_ops);
+
+= pg_bigm: Demerit\n(('note:pg_bigm：デメリット'))
+
+  * Slow for large document\n
+    (('note:文書が長いと遅い'))\n
+    (('note:(Normally, we want to use FTS for large document)'))\n
+    (('note:（普通は長い文書に対して全文検索したい）'))
+    * Because it needs "recheck"\n
+      (('note:「recheck」が必要だから'))
+
+= "recheck"
+
+  * "Exact" seq. search after\n
+    "loose" index search\n
+    (('note:「ゆるい」インデックス検索の後に実行する'))\n
+    (('note:「正確な」シーケンシャルサーチ'))
+    * (('wait'))The larger text, the slower\n
+      (('note:対象テキストが大きければ大きいほど遅くなる'))\n
+    * (('wait'))text = doc size * N docs\n
+      (('note:対象テキスト = 文書サイズ * 文書数'))
+
+= Benchmark\n(('note:ベンチマーク'))
+
+  # RT
+  delimiter = [|]
+
+  N hits | Elapsed time
+
+  311 | 0.049s
+  14,706 | 1.267s
+  20,389 | 2.860s
+
+(('tag:center'))
+Data: Japanese Wikipedia\n
+(('note:データ：日本語版Wikipedia'))\n
+(('note:Many records and large documents'))\n
+(('note:レコード数が多く、各ドキュメントも大きい'))\n
+(('note:N records: 0.9millions, Avg. body size: 677KiB'))\n
+(('note:レコード数：90万件、平均本文サイズ：677KiB'))
+
+= New solution\n(('note:新しいの解決策'))
+
+  # image
+  # src = images/pgroonga-logo.svg
+  # relative_width = 100
+
+= PGroonga
+
+  * Pronunciation: píːzí:lúnɡά\n
+    (('note:読み方：ぴーじーるんが'))
