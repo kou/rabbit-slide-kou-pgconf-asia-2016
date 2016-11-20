@@ -187,13 +187,93 @@ pg_bigm
   * Doesn't need "recheck"\n
     (('note:「recheck」が必要ないから'))
 
-  * (('wait'))Why not needed?\n
-    (('note:どうしてPGroongaは「recheck」が必要ないのか？'))
-    * Because PGroonga is\n
-      ((*full*)) inverted index\n
-      (('note:PGroongaは((*完全*))転置インデックスだから'))\n
-      (('note:(GIN is inverted index)'))\n
-      (('note:（GINはただの転置インデックス）'))
+  * (('wait'))Is "recheck" really slow?\n
+    (('note:本当に「recheck」が遅いの？'))
+    * See one more benchmark result\n
+      (('note:もう一つベンチマーク結果を見てみましょう'))
+
+= Benchmark\n(('note:ベンチマーク'))
+
+  # image
+  # src = images/search-pgroonga-pg-bigm-all.pdf
+  # relative_height = 100
+
+= Why is pg_bigm fast?\n(('note:pg_bigmはどうして速いのか'))
+
+  * Query is "日本"\n
+    (('note:クエリーは「日本」'))
+    * Point: 2 characters\n
+      (('note:ポイント：2文字'))
+  * (('wait'))pg_bigm doesn't need "recheck" for 2 chars query\n
+    (('note:pg_bigmは2文字のクエリーに「recheck」の必要がない'))
+    * It means that "recheck" is slow\n
+      (('note:つまり「recheck」が遅いということ'))
+
+= N-gram and "recheck"\n(('note:N-gramと「recheck」'))
+
+  * N-gram approach needs "phrase search" when query has N or more characters\n
+    (('note:N+1文字以上のクエリーには「フレーズ検索」が必要'))
+    * N=2 for pg_bigm, N=3 for pg_trgm\n
+      (('note:pg_bigmはN=2でpg_trgmはN=3'))
+
+  * (('wait'))GIN needs "recheck" for "phrase search"\n
+    (('note:GINは「フレーズ検索」には「recheck」が必要'))
+
+= Phrase search\n(('note:フレーズ検索'))
+
+  * Phrase search is "token search" and "position check"\n
+    (('note:フレーズ検索は「トークン検索」と「位置チェック」'))
+    * Tokens must exist and be ordered\n
+      (('note:トークンは同じ順序で出現していないといけない'))
+    * OK: "car at" for "car at" query
+    * NG: "at car" for "car at" query
+
+= N-gram and phrase search
+
+  (1) Split text to tokens\n
+      (('note:テキストをトークンに分割'))
+      * "cat"→"ca","at"
+  (2) ((*Search all tokens*))\n
+      (('note:すべてのトークンを検索'))
+      * "ca" and "at" exist: Candidate!
+  (3) ((*Check appearance pos.*))\n
+      (('note:出現位置をチェック'))
+      * "ca" then "at": Found!
+
+= N-gram and GIN: Create\n(('note:N-gramとGIN：作成'))
+
+  # image
+  # src = images/gin-n-gram-index.svg
+  # relative_height = 100
+
+= N-gram and GIN: Search\n(('note:N-gramとGIN：検索'))
+
+  # image
+  # src = images/gin-n-gram-search.svg
+  # relative_height = 100
+
+= GIN and phrase search\n(('note:GINとフレーズ検索'))
+
+  * Phrase search needs position check\n
+    (('note:フレーズ検索では出現位置チェックが必要'))
+  * GIN doesn't support position check\n
+    (('note:GINは出現位置チェックをサポートしていない'))
+    * →GIN needs "recheck"→Slow!\n
+      (('note:GINでは「recheck」が必要だから遅い'))
+
+= Why is PGroonga fast?\n(('note:PGroongaはどうして速いのか'))
+
+  * PGroonga uses N-gram (('note:by default'))\n
+    (('note:PGroongaはデフォルトでN-gramを使っている'))
+  * But doesn't need "recheck"\n
+    (('note:PGroongaは「recheck」の必要がない'))
+
+= Why no "recheck"?\n(('note:どうして「recheck」が必要ないのか'))
+
+PGroonga uses\n
+((*full*))\n
+inverted index\n
+(('note:PGroongaは((*完全*))転置インデックスを使っているから'))
 
 = Full inverted index\n(('note:完全転置インデックス'))
 
@@ -205,3 +285,11 @@ Including position\n
   # image
   # src = images/inverted-index.svg
   # relative_height = 100
+
+= N-gram/PGroonga: Search\n(('note:N-gramとPGroonga：検索'))
+
+  # image
+  # src = images/pgroonga-n-gram-search.svg
+  # relative_height = 100
+
+

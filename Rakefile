@@ -21,12 +21,15 @@ key_graphs = []
 plots = Pathname.glob("data/**/*.gnuplot")
 plots.each do |plot|
   output_base_dir = plot.dirname.to_s.gsub(/\Adata/, "images")
+  loaded_plots = []
   graphs = []
   data = []
 
   plot.open do |plot_file|
     plot_file.each_line do |line|
       case line.chomp
+      when /\Aload "(.*?)"\z/
+        loaded_plots << "#{plot.dirname}/#{$1}"
       when /"(.*?\.tsv)"/
         data << "#{plot.dirname}/#{$1}"
       when /\Aset output "(.*?)"\z/
@@ -37,7 +40,7 @@ plots.each do |plot|
 
   key_graph = graphs.first
   key_graphs << key_graph
-  file key_graph => [plot.to_s, *data] do
+  file key_graph => [plot.to_s, *loaded_plots, *data] do
     cd(plot.dirname) do
       sh("gnuplot", plot.basename.to_s)
     end

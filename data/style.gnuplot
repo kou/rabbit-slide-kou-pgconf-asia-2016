@@ -13,6 +13,7 @@ set label 1 font "Sans,18"
 set label 2 font "Sans,18"
 set label 3 font "Sans,18"
 set label 4 font "Sans,18"
+set label 5 font "Sans,18"
 
 set style line 1 lt 1 lc rgbcolor "#3465a4" lw 2.5 pt 7 ps 1
 set style line 2 lt 1 lc rgbcolor "#edd400" lw 2.5 pt 7 ps 1
