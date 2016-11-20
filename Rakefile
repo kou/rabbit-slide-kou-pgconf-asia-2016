@@ -52,5 +52,5 @@ end
 desc "Generate graphs"
 task :graph => key_graphs
 
-task :run => :grash
-task :pdf => :grash
+task :run => :graph
+task :pdf => :graph
