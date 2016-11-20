@@ -37,6 +37,7 @@ plots.each do |plot|
       end
     end
   end
+  next if graphs.empty?
 
   key_graph = graphs.first
   key_graphs << key_graph

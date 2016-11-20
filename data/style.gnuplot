@@ -7,6 +7,7 @@ set ytics scale 0
 set grid ytics linewidth 1 linetype -1
 
 set key font "Sans,18"
+set title font "Sans,18"
 set xlabel font "Sans,18"
 set ylabel font "Sans,18"
 set label 1 font "Sans,18"
@@ -14,6 +15,7 @@ set label 2 font "Sans,18"
 set label 3 font "Sans,18"
 set label 4 font "Sans,18"
 set label 5 font "Sans,18"
+set label 6 font "Sans,18"
 
 set style line 1 lt 1 lc rgbcolor "#3465a4" lw 2.5 pt 7 ps 1
 set style line 2 lt 1 lc rgbcolor "#edd400" lw 2.5 pt 7 ps 1

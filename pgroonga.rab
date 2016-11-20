@@ -292,4 +292,257 @@ Including position\n
   # src = images/pgroonga-n-gram-search.svg
   # relative_height = 100
 
+= Wrap up\n(('note:まとめ'))
 
+  * N-gram needs phrase search\n
+    (('note:N-gramの場合はフレーズ検索が必要'))
+  * Full inverted index provides fast phrase search\n
+    (('note:完全転置インデックスを使うと高速にフレーズ検索できる'))
+    * GIN isn't full inverted index\n
+      (('note:GINは完全転置インデックスではない'))
+    * PGroonga uses full inverted index\n
+      (('note:PGroongaは完全転置インデックスを使っている'))
+
+= FTS and English(*)\n(('note:全文検索と英語'))
+
+  * Normally, N-gram isn't used for English FTS\n
+    (('note:普通は英語の全文検索にN-gramを使わない'))
+    * (('wait'))N-gram is slower than word based approach (textsearch approach)\n
+      (('note:N-gramは単語ベースのやり方（textsearchのやり方）より遅め'))
+    * (('wait'))Stemming/stop word can't be used\n
+      (('note:N-gramではステミングとストップワードを使えない'))
+
+(('note:(*) English≒Alphabet based languages'))
+
+= PGroonga and English\n(('note:PGroongaと英語'))
+
+  * PGroonga uses N-gram (('note:by default'))\n
+    (('note:PGroongaはデフォルトではN-gramを使う'))
+    * Is PGroonga slow for English?\n
+      (('note:ではPGroongaは英語では遅いのか？'))
+    * (('wait'))No. Similar to textsearch\n
+      (('note:遅くない。textsearchと同じくらい'))
+
+= PGroonga: Search\n(('note:PGroonga：検索'))
+
+  # image
+  # src = images/search-pgroonga-textsearch.pdf
+  # relative_height = 100
+
+= PGroonga's N-gram
+
+  * Variable size N-gram\n
+    (('note:可変長サイズのN-gram'))
+    * Continuous alphabets are 1 token\n
+      (= word based approach)\n
+      (('note:連続したアルファベットは1トークン（=単語ベース）'))\n
+      Hello→"Hello" not "He","el",…
+    * No alphabet is 2-gram\n
+      (('note:非アルファベットは2-gram'))\n
+      こんにちは→"こん","んに",…
+
+= Wrap up1\n(('note:まとめ1'))
+
+  * PGroonga's search is fast for all languages\n
+    (('note:PGroongaの検索はすべての言語で速い'))
+    * Including alphabet based languages and Asian languages mixed case\n
+      (('note:アルファベットベースの言語とアジアの言語が混ざった場合でも速い'))\n
+      (('note:(textsearch doesn't support mixed case)'))\n
+      (('note:（textsearchは言語を混ぜることはできない）'))
+
+= Wrap up2\n(('note:まとめ2'))
+
+(('tag:center'))
+PGroonga makes PostgreSQL\n
+fast full text search platform\n
+for all languages!
+
+(('tag:center'))
+(('note:PGroongaでPostgreSQLが'))\n
+(('note:全言語対応高速全文検索プラットフォームになる！'))
+
+= More about PGroonga\n(('note:PGroongaについてもっと'))
+
+  * Performance\n
+    (('note:性能'))
+  * JSON support\n
+    (('note:JSONサポート'))
+  * Replication\n
+    (('note:レプリケーション'))
+
+= Performance\n(('note:性能'))
+
+= Search and update\n(('note:検索と更新'))
+
+  * Doesn't decrease search performance while updating\n
+    (('note:更新中も検索性能が落ちない'))
+
+= Characteristics\n(('note:傾向'))
+
+  # image
+  # src = images/performance-charcteristic-for-constant-read-and-write.svg
+  # relative_height = 100
+
+= Update and lock\n(('note:更新とロック'))
+
+  * Update without ((*read*)) locks\n
+    (('note:((*参照*))ロックなしで更新'))
+    * ((*Write*)) locks are required\n
+      (('note:((*書き込み*))ロックは必要'))
+
+= GIN: Read/Write\n(('note:GIN：読み書き'))
+
+  # image
+  # src = images/read-while-write-gin.svg
+  # relative_height = 100
+
+= PGroonga: Read/Write\n(('note:PGroonga：読み書き'))
+
+  # image
+  # src = images/read-while-write-pgroonga.svg
+  # relative_height = 100
+
+= Fast stably\n(('note:安定して速い'))
+
+  * GIN has intermittent performance decrements\n
+    (('note:GINは間欠的な性能劣化がある'))
+    * Search by "GIN pending list" for details\n
+      (('note:詳細は「GIN pending list」で検索'))
+  * PGroonga keeps index latest\n
+    (('note:PGroongaのインデックスは常に最新状態'))
+
+= Index only scan\n(('note:インデックスオンリースキャン'))
+
+  * GIN: Not supported\n
+    (('note:GIN：未サポート'))
+  * PGroonga: Supported\n
+    (('note:PGroonga：サポート'))
+
+= More faster search\n(('note:より高速な検索'))
+
+  * Direct Groonga search is faster\n
+    (('note:直接Groongaで検索するとさらに高速'))
+    * Groonga: Full text search engine PGroonga uses\n
+      (('note:Groonga：PGroongaが使っている全文検索エンジン'))
+
+= Direct Groonga search\n(('note:直接Groongaで検索'))
+
+  # image
+  # src = images/search-pgroonga-groonga-textsearch.pdf
+  # relative_height = 100
+
+= Index creation time\n(('note:インデックス作成時間'))
+
+  # image
+  # src = images/index-creation-en.pdf
+  # relative_height = 100
+
+= Performance: Wrap up\n(('note:性能：まとめ'))
+
+  * Keep fast search with update\n
+    (('note:更新しながらでも高速検索を維持'))
+  * Support index only scan\n
+    (('note:インデックスオンリースキャンをサポート'))
+  * Direct Groonga search is more faster\n
+    (('note:Groonga直接検索はもっと速い'))
+  * Fast index creation\n
+    (('note:インデックス作成も速い'))
+
+= JSON support\n(('note:JSONサポート'))
+
+  * Support full text search\n
+    (('note:全文検索対応'))
+    * Target: All texts in JSON\n
+      (('note:JSON内のすべてのテキスト'))
+    * Not only a text in a path\n
+      (('note:特定のパスのテキストだけではない'))\n
+      (('note:(GIN supports only this style)'))\n
+      (('note:（GINはこのやり方だけサポート）'))
+
+= JSON: FTS\n(('note:JSON：全文検索'))
+
+  # coderay sql
+  INSERT INTO logs (record)
+    VALUES ('{"host": "app1"}'),
+           ('{"message": "app is down"}');
+  SELECT * FROM logs
+    WHERE record @@ 'string @@ "app"'
+  --          record
+  -- --------------------------
+  -- {"host":    "app1"}
+  -- {"message": "app is down"}
+
+= JSON: Wrap up\n(('note:JSON：まとめ'))
+
+  * Support full text search against all texts in JSON\n
+    (('note:JSON内の全テキスト対象の全文検索をサポート'))
+
+= Replication\n(('note:レプリケーション'))
+
+  * Support with PostgreSQL 9.6!\n
+    (('note:PostgreSQL 9.6で使う場合はサポート！'))
+  * PostgreSQL 9.6 ships "generic WAL"\n
+    (('note:PostgreSQL 9.6で「generic WAL」機能が追加'))
+    * Third party index can support WAL generation\n
+      (('note:サードパーティーのインデックスもWALを生成できる'))
+
+= Implementation\n(('note:実装'))
+
+  (1) Master: Encode action logs as MessagePack\n
+      (('note:マスター：アクションログをMessagePackでエンコード'))
+  (2) Master: Write the action logs to WAL\n
+      (('note:マスター：アクションログをWALに書き込み'))
+  (3) Slaves: Read the action logs and apply them\n
+      (('note:スレーブ：アクションログを読み込んで適用'))
+
+= Summary
+
+TODO
+
+= Action log: "action"\n(('note:アクションログ：「アクション」'))
+
+  {
+    "_action": ACTION_ID
+  }
+  # ACTION_ID: 0: INSERT
+  # ACTION_ID: 1: CREATE_TABLE
+  # ACTION_ID: 2: CREATE_COLUMN
+  # ACTION_ID: 3: SET_SOURCES
+
+= Action log: INSERT\n(('note:アクションログ：INSERT'))
+
+  {
+    "_action": 0,
+    "_table":  "TABLE_NAME",
+    "ctid":    PACKED_CTID_VALUE,
+    "column1": COLUMN1_VALUE,
+    ...
+  }
+
+= Action log: Logs\n(('note:アクションログ：複数ログ'))
+
+  {"_action": ACTION_ID, ...}
+  {"_action": ACTION_ID, ...}
+  {"_action": ACTION_ID, ...}
+  ...
+
+= Action log: Why msgpack?\n(('note:アクションログ：どうしてmsgpack？'))
+
+  * Because MessagePack supports streaming unpack\n
+    (('note:MessagePackはストリーミングで展開できるから'))
+    * It's useful to stop applying action logs when WAL is applied partially on slaves\n
+      (('note:スレーブでWALが途中までしか書き込まれていないときにアクションログの適用を中断できるので便利'))
+
+= Write action logs\n(('note:アクションログの書き込み'))
+
+TODO
+
+= See also
+
+https://pgroonga.github.io/
+
+  * Tutorial: /tutorial/
+  * Install: /install/
+  * Reference: /reference/
+    * includes replication doc and benchmark docs
+  * Community: /community/

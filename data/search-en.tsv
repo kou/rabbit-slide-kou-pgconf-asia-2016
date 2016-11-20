@@ -1,0 +1,5 @@
+Query	PGroonga	"N hits(PGroonga)"	Groonga	"N hits(Groonga)"	pg\\_trgm	"N hits(pg\\_trgm)"	textsearch	"N hits(textsearch)"
+"PostgreSQL OR MySQL"	6	1636	3	1636	241	1484	3	1506
+#animation	173	40802	6	40802	44000	33604	1000	423425
+database	698	209353	19	209353	33000	134973	602	194750
+America	1300	472762	59	472762	92000	1410041	1200	480855
