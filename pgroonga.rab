@@ -102,14 +102,19 @@ pg_bigm
 
 = pg_bigm
 
-  * Similar to pg_trgm\n
+  * An extension\n
+    (('note:拡張機能'))
+  * (('wait'))Similar to pg_trgm\n
     (('note:pg_trgmと似ている'))
     * Operator class for GIN\n
       (('note:GIN用の演算子クラス'))
 
- # coderay sql
- CREATE INDEX index ON table
-   USING gin (column gin_bigm_ops);
+= pg_bigm: Usage\n(('note:pg_bigm：使い方'))
+
+  # coderay sql
+  CREATE INDEX index ON table
+    USING gin (column gin_bigm_ops);
+  --     ↑Use GIN   ↑Specify op class
 
 = pg_bigm: Demerit\n(('note:pg_bigm：デメリット'))
 
@@ -117,7 +122,7 @@ pg_bigm
     (('note:文書が長いと遅い'))\n
     (('note:(Normally, we want to use FTS for large document)'))\n
     (('note:（普通は長い文書に対して全文検索したい）'))
-    * Because it needs "recheck"\n
+    * (('wait'))Because it needs "recheck"\n
       (('note:「recheck」が必要だから'))
 
 = "recheck"
@@ -147,6 +152,9 @@ pg_bigm
 
   * Pronunciation: píːzí:lúnɡά\n
     (('note:読み方：ぴーじーるんが'))
+
+  * (('wait'))An extension\n
+    (('note:拡張機能'))
 
   * (('wait'))Index and operator classes\n
     (('note:インデックスと演算子クラス'))
@@ -372,6 +380,11 @@ for all languages!
 
 = Performance\n(('note:性能'))
 
+  * Search and update\n(('note:検索と更新'))
+  * Index only scan\n(('note:インデックスオンリースキャン'))
+  * Direct Groonga search\n(('note:直接Groongaで検索'))
+  * Index creation\n(('note:インデックス作成'))
+
 = Search and update\n(('note:検索と更新'))
 
   * Doesn't decrease search performance while updating\n
@@ -406,10 +419,12 @@ for all languages!
 
   * GIN has intermittent performance decrements\n
     (('note:GINは間欠的な性能劣化がある'))
-    * Search by "GIN pending list" for details\n
+    * For details:🔎"GIN pending list"\n
       (('note:詳細は「GIN pending list」で検索'))
-  * PGroonga keeps index latest\n
-    (('note:PGroongaのインデックスは常に最新状態'))
+  * PGroonga keeps fast search\n
+    (('note:PGroongaは高速な検索を維持'))
+    * PGroonga keeps index latest\n
+      (('note:PGroongaのインデックスは常に最新状態'))
 
 = Index only scan\n(('note:インデックスオンリースキャン'))
 
@@ -420,7 +435,7 @@ for all languages!
 
 = More faster search\n(('note:より高速な検索'))
 
-  * Direct Groonga search is faster\n
+  * Direct Groonga search is more faster\n
     (('note:直接Groongaで検索するとさらに高速'))
     * Groonga: Full text search engine PGroonga uses\n
       (('note:Groonga：PGroongaが使っている全文検索エンジン'))
@@ -495,9 +510,11 @@ for all languages!
   (3) Slaves: Read the action logs and apply them\n
       (('note:スレーブ：アクションログを読み込んで適用'))
 
-= Summary
+= Overview\n(('note:概要'))
 
-TODO
+  # image
+  # src = images/replication-overview.svg
+  # relative_width = 100
 
 = Action log: "action"\n(('note:アクションログ：「アクション」'))
 
@@ -526,6 +543,18 @@ TODO
   {"_action": ACTION_ID, ...}
   ...
 
+= Write action logs\n(('note:アクションログの書き込み'))
+
+  # image
+  # src = images/replication-write-action-logs.svg
+  # relative_height = 100
+
+= Apply action logs\n(('note:アクションログの適用'))
+
+  # image
+  # src = images/replication-apply-action-logs.svg
+  # relative_height = 100
+
 = Action log: Why msgpack?\n(('note:アクションログ：どうしてmsgpack？'))
 
   * Because MessagePack supports streaming unpack\n
@@ -533,9 +562,46 @@ TODO
     * It's useful to stop applying action logs when WAL is applied partially on slaves\n
       (('note:スレーブでWALが途中までしか書き込まれていないときにアクションログの適用を中断できるので便利'))
 
-= Write action logs\n(('note:アクションログの書き込み'))
+= Replication: Wrap up\n(('note:レプリケーション：まとめ'))
 
-TODO
+  * Support with PostgreSQL 9.6!\n
+    (('note:PostgreSQL 9.6で使う場合はサポート！'))
+  * Concept: Action logs on WAL\n
+    (('note:コンセプト：WAL上にアクションログを書く'))
+    * It'll be an useful pattern for out of PostgreSQL storage index\n
+      (('note:PostgreSQL管理外のストレージを使うインデックスではこのパターンが使えるはず'))
+
+= Wrap up1\n(('note:まとめ1'))
+
+  * PostgreSQL doesn't support FTS for all languages\n
+    (('note:PostgreSQLの全文検索は一部の言語のみ対応'))
+  * PGroonga supports FTS for all languages\n
+    (('note:PGroongaの全文検索は全言語対応'))
+
+= Wrap up2\n(('note:まとめ2'))
+
+  * PGroonga is fast stably\n
+    (('note:PGroongaは安定して速い'))
+  * PGroonga supports FTS for all texts in JSON\n
+    (('note:PGroongaはJSON中の全テキストに対する全文検索に対応'))
+
+= Wrap up3\n(('note:まとめ3'))
+
+  * PGroonga supports replication\n
+    (('note:PGroongaはレプリケーション対応'))
+    * PostgreSQL 9.6 is required\n
+      (('note:ただしPostgreSQL 9.6が必要'))
+
+= Wrap up4\n(('note:まとめ4'))
+
+(('tag:center'))
+PGroonga makes PostgreSQL\n
+fast full text search platform\n
+for all languages!
+
+(('tag:center'))
+(('note:PGroongaでPostgreSQLが'))\n
+(('note:全言語対応高速全文検索プラットフォームになる！'))
 
 = See also
 
@@ -544,5 +610,5 @@ https://pgroonga.github.io/
   * Tutorial: /tutorial/
   * Install: /install/
   * Reference: /reference/
-    * includes replication doc and benchmark docs
+    * Includes replication doc and benchmark docs
   * Community: /community/

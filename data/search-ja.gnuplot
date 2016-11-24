@@ -43,8 +43,10 @@ plot [0:20389] \
        with linespoints \
        linestyle 1
 
-set label 1 ""
-set label 2 ""
+set label 1 \
+          at first 200000,2.875 left
+set label 2 \
+          at first 200000,2.375 left
 set label 3 \
           "Slow" \
           textcolor "#ef2929" \
