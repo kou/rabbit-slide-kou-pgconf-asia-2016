@@ -605,10 +605,10 @@ for all languages!
 
 = See also
 
-https://pgroonga.github.io/
+((<"https://pgroonga.github.io/"|URL:https://pgroonga.github.io/>))
 
-  * Tutorial: /tutorial/
-  * Install: /install/
-  * Reference: /reference/
+  * Tutorial: ((<"/tutorial/"|URL:https://pgroonga.github.io/tutorial/>))
+  * Install: ((<"/install/"|URL:https://pgroonga.github.io/install/>))
+  * Reference: ((<"/reference/"|URL:https://pgroonga.github.io/reference/>))
     * Includes replication doc and benchmark docs
-  * Community: /community/
+  * Community: ((<"/community/"|URL:https://pgroonga.github.io/community/>))
