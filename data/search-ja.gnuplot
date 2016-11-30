@@ -1,7 +1,7 @@
 load "style.gnuplot"
 
 set xlabel "N hits"
-set ylabel "Elapsed time (sec)\n(Shorter is better)"
+set ylabel "Elapsed time (sec)\n(Lower is better)"
 
 set label 1 \
           "Data: Japanese Wikipedia\n(Many records and large documents)" \

@@ -1,7 +1,7 @@
 load "style.gnuplot"
 
 set xlabel "Query" font "Sans,14"
-set ylabel "Elapsed time (ms)\n(Shorter is better)"
+set ylabel "Elapsed time (ms)\n(Lower is better)"
 
 set style data histogram
 set style histogram cluster gap 1
