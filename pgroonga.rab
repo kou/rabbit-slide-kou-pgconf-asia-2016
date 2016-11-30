@@ -218,7 +218,7 @@ pg_bigm
 
 = N-gram and "recheck"\n(('note:N-gramと「recheck」'))
 
-  * N-gram approach needs "phrase search" when query has N or more characters\n
+  * N-gram approach needs "phrase search" when query has N+1 or more characters\n
     (('note:N+1文字以上のクエリーには「フレーズ検索」が必要'))
     * N=2 for pg_bigm, N=3 for pg_trgm\n
       (('note:pg_bigmはN=2でpg_trgmはN=3'))
