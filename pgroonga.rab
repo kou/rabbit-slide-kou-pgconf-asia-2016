@@ -372,6 +372,8 @@ for all languages!
 
   * Performance\n
     (('note:性能'))
+  * Japanese specific feature\n
+    (('note:日本語向けの機能'))
   * JSON support\n
     (('note:JSONサポート'))
   * Replication\n
@@ -461,6 +463,81 @@ for all languages!
     (('note:Groonga直接検索はもっと速い'))
   * Fast index creation\n
     (('note:インデックス作成も速い'))
+
+= Japanese specific feature\n(('note:日本語向けの機能'))
+
+  * Completion by Romaji\n
+    (('note:ローマ字による入力補完'))
+
+= Completion: Table\n(('note:入力補完：テーブル'))
+
+  # coderay sql
+
+  CREATE TABLE stations (
+    name text,
+    readings text[]
+    -- ↑Support N readings
+  );
+
+= Completion: Data\n(('note:入力補完：データ'))
+
+  # coderay sql
+
+  INSERT INTO stations VALUES
+  ('Tokyo',
+   ARRAY['トウキョウ']),
+  -- ↑In Katakana
+  -- (...),
+  ('Akihabara',
+   ARRAY['アキハバラ', 'アキバ']);
+
+= Completion: Index\n(('note:入力補完：インデックス'))
+
+  # coderay sql
+
+  CREATE INDEX pgroonga_index
+    ON stations
+    USING pgroonga (
+      -- ↓For prefix and prefix Romaji/Katakana search
+      name     pgroonga.text_term_search_ops_v2,
+      -- ↓For prefix and prefix Romaji/Katakana search
+      --   against array
+      readings pgroonga.text_array_term_search_ops_v2);
+
+= Completion: Search\n(('note:入力補完：検索'))
+
+  # coderay sql
+
+  SELECT name, readings
+    FROM stations
+   WHERE name &^ 'tou' OR
+      -- ↑Prefix search
+         readings &^~> 'tou'
+      -- ↑Prefix Romaji/Katakana search
+   ORDER BY name LIMIT 10;
+
+= Completion: Result\n(('note:入力補完：結果'))
+
+(('tag:center'))
+Hit by\n
+prefix Romaji/Katakana search\n
+"tou"(Romaji)→"トウ"(Katakana)\n
+(('note:前方一致RK検索でヒット'))
+
+  # _
+   name  |   readings   
+  -------+--------------
+   Tokyo | {トウキョウ}
+  (1 row)
+
+= For Japanese: Wrap up\n(('note:日本語向け機能：まとめ'))
+
+  * Support prefix Romaji/Kana search\n
+    (('note:前方一致RK検索をサポート'))
+    * Useful for implementing auto complete feature in search box\n
+      (('note:検索欄にオートコンプリート機能を実装する時に便利'))
+    * Users don't need to convert Romaji to Kanji\n
+      (('note:ユーザーはローマ字を漢字に変換する必要がない'))
 
 = JSON support\n(('note:JSONサポート'))
 
