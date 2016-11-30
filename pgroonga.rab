@@ -422,7 +422,7 @@ for all languages!
       (('note:詳細は「GIN pending list」で検索'))
   * PGroonga keeps fast search\n
     (('note:PGroongaは高速な検索を維持'))
-    * PGroonga keeps index latest\n
+    * PGroonga keeps index updated\n
       (('note:PGroongaのインデックスは常に最新状態'))
 
 = Index only scan\n(('note:インデックスオンリースキャン'))
