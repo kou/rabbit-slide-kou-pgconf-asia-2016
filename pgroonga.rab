@@ -112,7 +112,7 @@ pg_bigm
 
   # coderay sql
   CREATE INDEX index ON table
-    USING gin (column gin_bigm_ops);
+    USING GIN (column gin_bigm_ops);
   --     ↑Use GIN   ↑Specify op class
 
 = pg_bigm: Demerit\n(('note:pg_bigm：デメリット'))
