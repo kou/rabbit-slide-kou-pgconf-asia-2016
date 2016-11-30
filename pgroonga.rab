@@ -88,11 +88,10 @@ Many langs aren't supported\n
 
   # coderay sql
   CREATE EXTENSION pg_trgm;
-  SELECT 'こんにちは' % 'にちは';
-  --                    ↑substring
-  --  ?column? 
-  -- ----------
-  --  f ← Must be "t"!
+  SELECT show_trgm('こんにちは');
+  --  show_trgm 
+  -- -----------
+  --  {} ← Must not empty!
   -- (1 row)
 
 = Existing solution\n(('note:既存の解決策'))
