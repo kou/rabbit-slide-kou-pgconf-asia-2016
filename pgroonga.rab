@@ -43,7 +43,7 @@ They are found while developing PGroonga\n
 
 = PostgreSQL and FTS\n(('note:PostgreSQLと全文検索'))
 
-  * PostgreSQL has out-of-the-box full text search feature\n
+  * PostgreSQL has built-in full text search feature\n
     (('note:PostgreSQLには組込の全文検索機能がある'))\n
     * (('wait'))It has some problems...\n
       (('note:ただ、いくつか問題がある'))
@@ -242,7 +242,7 @@ pg_bigm
       * "cat"→"ca","at"
   (2) ((*Search all tokens*))\n
       (('note:すべてのトークンを検索'))
-      * "ca" and "at" exist: Candidate!
+      * "ca" & "at" exist: Candidate!
   (3) ((*Check appearance pos.*))\n
       (('note:出現位置をチェック'))
       * "ca" then "at": Found!
@@ -461,7 +461,7 @@ for all languages!
 
 = Performance: Wrap up\n(('note:性能：まとめ'))
 
-  * Keep fast search with update\n
+  * Keep fast search w/ update\n
     (('note:更新しながらでも高速検索を維持'))
   * Support index only scan\n
     (('note:インデックスオンリースキャンをサポート'))
@@ -556,18 +556,49 @@ prefix Romaji/Katakana search\n
       (('note:(GIN supports only this style)'))\n
       (('note:（GINはこのやり方だけサポート）'))
 
-= JSON: FTS\n(('note:JSON：全文検索'))
+= JSON: FTS: Data\n(('note:JSON：全文検索：Data'))
 
   # coderay sql
+  CREATE TABLE logs (
+    record jsonb
+  );
   INSERT INTO logs (record)
     VALUES ('{"host": "app1"}'),
            ('{"message": "app is down"}');
+
+= JSON: FTS: Index\n(('note:JSON：全文検索：インデックス'))
+
+  # coderay sql
+  CREATE INDEX message_index ON logs
+    USING GIN
+      ((record->>'message') gin_trgm_ops);
+  -- {"message": "HERE IS ONLY SEARCHABLE"}
+  CREATE INDEX record_index ON logs
+    USING pgroonga (record);
+  -- All string values are searchable
+
+= JSON: FTS: GIN\n(('note:JSON：全文検索：GIN'))
+
+  # coderay sql
   SELECT * FROM logs
-    WHERE record @@ 'string @@ "app"'
-  --          record
-  -- --------------------------
-  -- {"host":    "app1"}
-  -- {"message": "app is down"}
+    WHERE record->>'message' LIKE '%app%';
+  -- ↑ {"host": "app1"} isn't target
+  --            record           
+  -- ----------------------------
+  --  {"message": "app is down"}
+  -- (1 row)
+
+= JSON: FTS: PGroonga\n(('note:JSON：全文検索：PGroonga'))
+
+  # coderay sql
+  SELECT * FROM logs
+    WHERE record @@ 'string @ "app"';
+  -- ↑ All string values are target
+  --            record           
+  -- ----------------------------
+  --  {"host": "app1"}
+  --  {"message": "app is down"}
+  -- (2 rows)
 
 = JSON: Wrap up\n(('note:JSON：まとめ'))
 
@@ -576,7 +607,7 @@ prefix Romaji/Katakana search\n
 
 = Replication\n(('note:レプリケーション'))
 
-  * Support with PostgreSQL 9.6!\n
+  * Support with PG 9.6!\n
     (('note:PostgreSQL 9.6で使う場合はサポート！'))
   * PostgreSQL 9.6 ships "generic WAL"\n
     (('note:PostgreSQL 9.6で「generic WAL」機能が追加'))
@@ -586,7 +617,7 @@ prefix Romaji/Katakana search\n
 = Implementation\n(('note:実装'))
 
   (1) Master: Encode action logs as MessagePack\n
-      (('note:マスター：アクションログをMessagePackでエンコード'))
+      (('note:マスター：アクションログをMessagePack形式に変換'))
   (2) Master: Write the action logs to WAL\n
       (('note:マスター：アクションログをWALに書き込み'))
   (3) Slaves: Read the action logs and apply them\n
@@ -646,7 +677,7 @@ prefix Romaji/Katakana search\n
 
 = Replication: Wrap up\n(('note:レプリケーション：まとめ'))
 
-  * Support with PostgreSQL 9.6!\n
+  * Support with PG 9.6!\n
     (('note:PostgreSQL 9.6で使う場合はサポート！'))
   * Concept: Action logs on WAL\n
     (('note:コンセプト：WAL上にアクションログを書く'))

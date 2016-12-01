@@ -316,14 +316,14 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="291.32061"
-     inkscape:cy="178.64967"
+     inkscape:cx="291.33318"
+     inkscape:cy="292.12282"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1016"
-     inkscape:window-x="1920"
+     inkscape:window-width="1024"
+     inkscape:window-height="704"
+     inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
      fit-margin-top="5"
@@ -339,7 +339,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -534,7 +534,7 @@
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
        id="path4336"
-       d="m -149.90468,129.3986 0,40.20305"
+       d="m -149.90468,125.82717 0,56.63162"
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker4356)" />
     <text
        sodipodi:linespacing="125%"
@@ -808,40 +808,18 @@
          id="tspan5074">(Point: In PGroonga)</tspan></text>
     <g
        id="g5507"
-       transform="translate(-71.602156,-72.741644)">
+       transform="translate(-71.602156,-64.884501)">
       <text
          sodipodi:linespacing="125%"
          id="text4558"
-         y="277.1691"
+         y="289.1691"
          x="-105.25858"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32px;line-height:125%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
            id="tspan4562"
-           y="277.1691"
+           y="289.1691"
            x="-105.25858"
            sodipodi:role="line">&quot;ca&quot;,&quot;at&quot;</tspan></text>
-      <text
-         sodipodi:linespacing="125%"
-         id="text4846"
-         y="312.24121"
-         x="-79.601219"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32px;line-height:125%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#204a87;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         xml:space="preserve"><tspan
-           y="312.24121"
-           x="-79.601219"
-           id="tspan4848"
-           sodipodi:role="line">1</tspan></text>
-      <text
-         sodipodi:linespacing="125%"
-         id="text4850"
-         y="312.27246"
-         x="-1.5595034"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32px;line-height:125%;font-family:Sans;-inkscape-font-specification:Sans;letter-spacing:0px;word-spacing:0px;fill:#204a87;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         xml:space="preserve"><tspan
-           y="312.27246"
-           x="-1.5595034"
-           id="tspan4852"
-           sodipodi:role="line">2</tspan></text>
     </g>
     <path
        sodipodi:nodetypes="cc"
