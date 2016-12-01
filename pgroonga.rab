@@ -22,9 +22,9 @@ Some my patches are merged\n
 
 = Patches\n(('note:パッチ'))
 
-  * (('wait'))BUG #13840: pg_dump generates unloadable SQL\n
+  * (('wait'))#13840: pg_dump generates unloadable SQL\n
     (('note:pg_dumpがリストアできないSQLを出力する'))
-  * (('wait'))BUG #14160: DROP ACCESS METHOD IF EXISTS isn't impl.\n
+  * (('wait'))#14160: DROP ACCESS METHOD IF EXISTS isn't impl.\n
     (('note:DROP ACCESS METHOD IF EXISTSが実装されていない'))
 
 (('wait'))
