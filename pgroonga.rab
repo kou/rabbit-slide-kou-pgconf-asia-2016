@@ -390,6 +390,12 @@ for all languages!
 
   * Doesn't decrease search performance while updating\n
     (('note:更新中も検索性能が落ちない'))
+    * (('wait'))It's good characteristics for chat application\n
+      (('note:チャットアプリでうれしい傾向'))
+    * (('wait'))Zulip supports PGroonga\n
+      Zulip: OSS chat app by Dropbox\n
+      (('note:ZulipはPGroongaをサポートしている'))\n
+      (('note:ZulipはDropboxが開発しているOSSのチャットアプリ'))
 
 = Characteristics\n(('note:傾向'))
 
